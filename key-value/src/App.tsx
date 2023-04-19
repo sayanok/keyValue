@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
+const App: React.FC = () => {
+  const [input, setInput] = useState("");
+  const [keycode, setKeycode] = useState<number | string>("");
+  const [altKeyIndicator, setAltKeyIndicator] = useState<string>("");
+  const [controlKeyIndicator, setControlKeyIndicator] = useState<string>("");
+  const [commandKeyIndicator, setCommandKeyIndicator] = useState<string>("");
+  const [shiftKeyIndicator, setShiftKeyIndicator] = useState<string>("");
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    setInput(event.key);
+    setKeycode(event.keyCode);
+    setAltKeyIndicator(event.altKey.toString());
+    setControlKeyIndicator(event.ctrlKey.toString());
+    setCommandKeyIndicator(event.metaKey.toString());
+    setShiftKeyIndicator(event.shiftKey.toString());
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+  }, []);
+
+  function clear() {
+    setInput("");
+    setKeycode("");
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <p>入力したキー</p>
+      <textarea value={input}></textarea>
+      <p>キーコード</p>
+      <textarea value={keycode}></textarea>
+      <p>インジケーター</p>
+      <p>
+        alt:<input value={altKeyIndicator}></input>
+      </p>
+      <p>
+        control:<input value={controlKeyIndicator}></input>
+      </p>
+      <p>
+        command:<input value={commandKeyIndicator}></input>
+      </p>
+      <p>
+        shift:<input value={shiftKeyIndicator}></input>
+      </p>
+      <button onClick={() => clear()}>clear</button>
+    </>
   );
-}
+};
 
 export default App;
